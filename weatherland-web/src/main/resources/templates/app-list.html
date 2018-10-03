@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+</head>
+<body>
+
+<div class="container">
+    <div class="row" th:each="item : ${list}">
+
+        <a class="value" th:text="${item}" th:href="@{/report/{item}(item=${item})}">
+
+        </a>
+    </div>
+
+   <!-- th:each="item : ${greeting.list}" th:text="${item}">Item description here...</li>
+    <div th:utext="${content}"></div>-->
+</div>
+
+</body>
+</html>

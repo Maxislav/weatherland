@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface IReportService {
 
-    List<Report> getAll();
+    List<String> getAll();
+    String getHtmlStr();
+
 }

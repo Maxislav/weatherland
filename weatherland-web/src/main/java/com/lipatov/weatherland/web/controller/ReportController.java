@@ -40,128 +40,35 @@ public class ReportController {
     private IReportService reportService;
 
     @RequestMapping(value = "/report")
-    public List<Report> getAll() {
+    public String getAll( Map<String, Object> model) {
         // log.info("Sending request to get all reports");
-        List<Report> reports = reportService.getAll();
-        reports.add(Report.builder().id("1").name("name_1").build());
-        reports.add(Report.builder().id("2").name("name_2").build());
-        return reports;
+        List<String> reports = reportService.getAll();
+       // reports.add(Report.builder().id("1").name("name_1").build());
+       // reports.add(Report.builder().id("2").name("name_2").build());
+        model.put("list", reports);
+        return "app-list";
     }
 
 
     @RequestMapping(value = "/report/{id}")
     public String getReportById(@PathVariable String id, Map<String, Object> model) {
-
        /* log.info("Sending request to get all reports, movieId from request: {}", id);
         List<Report> reports = reportService.getAll();
         reports.add(Report.builder().id("1").name("name_1").build());
         reports.add(Report.builder().id("2").name("name_2").build());*/
-
-
         // System.getProperty("user.dir");
         model.put("message", this.message);
         model.put("index", id);
         model.put("dir", System.getProperty("user.dir"));
-        JSONObject jsonObject = readLineByLineJava8(System.getProperty("user.dir") + "/2018-09-21_09-47-04.900.json");
-        String content = htmlFromJson(jsonObject);
-        model.put("content", content);
-        logger.info(content);
+        //JSONObject jsonObject = readLineByLineJava8(System.getProperty("user.dir") + "/2018-09-21_09-47-04.900.json");
+        //String content = htmlFromJson(jsonObject);
+        //model.put("content", content);
+        model.put("content", reportService.getHtmlStr());
+        //logger.info(content);
         return "index";
     }
 
 
-    private String htmlFromArray(JSONArray jsonArray) {
-        StringBuilder contentBuilder = new StringBuilder();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            Object v = null;
-            try {
-                v = jsonArray.get(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (v instanceof JSONArray) {
-                contentBuilder.append("<div>" + htmlFromArray((JSONArray) v) + "</div>");
-            } else if (v instanceof JSONObject) {
-                contentBuilder.append("<div>" + htmlFromJson((JSONObject) v) + "</div>");
-            } else {
-                contentBuilder.append("<div>" + String.valueOf(v) + "</div>");
-            }
-
-        }
-        return contentBuilder.toString();
-    }
-
-    private String htmlFromJson(JSONObject jsonObject) {
-        Iterator<String> keys = jsonObject.keys();
-        StringBuilder contentBuilder = new StringBuilder();
-        while (keys.hasNext()) {
-            String key = keys.next();
-            Object v = null;
-            try {
-                v = jsonObject.get(key);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (v instanceof JSONArray) {
-                contentBuilder.append(
-                        "<div class='row'> " +
-                                "<div class='flex'>" +
-                                "<div class='key'>" + key + "</div>" +
-                                "<div class='value'>" + htmlFromArray((JSONArray) v) + "</div>" +
-                                "</div>" +
-                                "</div>"
-                );
-
-            } else if (v instanceof JSONObject) {
-                contentBuilder.append(
-                        "<div class='row'> " +
-                                "<div class='flex'>" +
-                                "<div class='key'>" + key + "</div>" +
-                                "<div class='value'>" + htmlFromJson((JSONObject) v) + "</div>" +
-                                "</div>" +
-                                "</div>"
-                );
-            } else {
-                contentBuilder.append(
-                        "<div class='row'> " +
-                                "<div class='flex'>" +
-                                "<div class='key'>" + key + "</div>" +
-                                "<div class='value'>" + replaceToBr(key, String.valueOf(v)) + "</div>" +
-                                "</div>" +
-                                "</div>"
-                );
-            }
-
-        }
-
-        return contentBuilder.toString();
-    }
-
-    private String replaceToBr(String key, String s){
-        if(s.contains("\n")){
-           s = s.replaceAll("\n\t?", "<\\br>");
-        }
-        return  s;
-    }
-
-    private JSONObject readLineByLineJava8(String filePath) {
-        JSONObject jsonObj = null;
-        StringBuilder contentBuilder = new StringBuilder();
-        try (Stream<String> stream = Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String s = contentBuilder.toString();
-        try {
-            jsonObj = new JSONObject(s);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObj;
-    }
 
 }
