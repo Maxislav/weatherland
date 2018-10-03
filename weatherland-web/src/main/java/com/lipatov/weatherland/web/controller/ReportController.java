@@ -18,6 +18,8 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -126,7 +128,7 @@ public class ReportController {
                         "<div class='row'> " +
                                 "<div class='flex'>" +
                                 "<div class='key'>" + key + "</div>" +
-                                "<div class='value'>" + String.valueOf(v) + "</div>" +
+                                "<div class='value'>" + replaceToBr(key, String.valueOf(v)) + "</div>" +
                                 "</div>" +
                                 "</div>"
                 );
@@ -135,6 +137,13 @@ public class ReportController {
         }
 
         return contentBuilder.toString();
+    }
+
+    private String replaceToBr(String key, String s){
+        if(s.contains("\n")){
+           s = s.replaceAll("\n\t?", "<\\br>");
+        }
+        return  s;
     }
 
     private JSONObject readLineByLineJava8(String filePath) {

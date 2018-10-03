@@ -29,7 +29,7 @@ body{
 .flex>*, .cell{
     padding: 10px 20px;
 }
-.row{
+.row:not(:last-child){
  border-bottom: 1px solid gray;
 }
 .row:nth-child(2n){
