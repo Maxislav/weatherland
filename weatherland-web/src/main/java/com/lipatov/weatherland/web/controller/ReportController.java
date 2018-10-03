@@ -63,6 +63,7 @@ public class ReportController {
         JSONObject jsonObject = readLineByLineJava8(System.getProperty("user.dir") + "/2018-09-21_09-47-04.900.json");
         String content = htmlFromJson(jsonObject);
         model.put("content", content);
+        logger.info(content);
         return "index";
     }
 
@@ -102,12 +103,13 @@ public class ReportController {
             }
 
             if (v instanceof JSONArray) {
-                contentBuilder.append("<div class='row'> " +
-                        "<div class='flex'>" +
-                        "<div class='key'>" + key + "</div>" +
-                        "<div class='value'>" + htmlFromArray((JSONArray) v) + "</div>" +
-                        "</div>" +
-                        "</div>"
+                contentBuilder.append(
+                        "<div class='row'> " +
+                                "<div class='flex'>" +
+                                "<div class='key'>" + key + "</div>" +
+                                "<div class='value'>" + htmlFromArray((JSONArray) v) + "</div>" +
+                                "</div>" +
+                                "</div>"
                 );
 
             } else if (v instanceof JSONObject) {
@@ -124,7 +126,6 @@ public class ReportController {
                         "<div class='row'> " +
                                 "<div class='flex'>" +
                                 "<div class='key'>" + key + "</div>" +
-
                                 "<div class='value'>" + String.valueOf(v) + "</div>" +
                                 "</div>" +
                                 "</div>"
