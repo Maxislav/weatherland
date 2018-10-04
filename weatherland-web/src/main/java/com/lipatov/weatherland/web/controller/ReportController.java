@@ -42,7 +42,7 @@ public class ReportController {
     @RequestMapping(value = "/report")
     public String getAll( Map<String, Object> model) {
         // log.info("Sending request to get all reports");
-        List<String> reports = reportService.getAll();
+        List<String> reports = reportService.getAppList();
        // reports.add(Report.builder().id("1").name("name_1").build());
        // reports.add(Report.builder().id("2").name("name_2").build());
         model.put("list", reports);
@@ -71,7 +71,7 @@ public class ReportController {
         //JSONObject jsonObject = readLineByLineJava8(System.getProperty("user.dir") + "/2018-09-21_09-47-04.900.json");
         //String content = htmlFromJson(jsonObject);
         //model.put("content", content);
-        model.put("content", reportService.getHtmlStr());
+        model.put("content", reportService.getHtmlStr(appName, fileName));
         //logger.info(content);
         return "index";
     }

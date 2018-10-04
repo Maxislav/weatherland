@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IReportService {
 
-    List<String> getAll();
+    List<String> getAppList();
     List<String> getFileList(String appName);
-    String getHtmlStr();
+    String getHtmlStr(String appName, String fileName);
 
 }

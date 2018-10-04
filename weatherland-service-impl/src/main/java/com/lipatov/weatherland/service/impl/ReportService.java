@@ -29,7 +29,7 @@ public class ReportService implements IReportService {
     private IReportDao reportDao;
 
     @Override
-    public List<String> getAll() {
+    public List<String> getAppList() {
         log.info("Service layer");
         reportDao.getAll();
         File aDirectory = new File(System.getProperty("user.dir")+"/report");
@@ -53,8 +53,8 @@ public class ReportService implements IReportService {
     }
 
     @Override
-    public String getHtmlStr() {
-        JSONObject jsonObject = readLineByLineJava8(System.getProperty("user.dir") + "/2018-09-21_09-47-04.900.json");
+    public String getHtmlStr(String appName, String fileName) {
+        JSONObject jsonObject = readLineByLineJava8(System.getProperty("user.dir") +"/report/"+ appName+"/"+ fileName);
         return htmlFromJson(jsonObject, null);
     }
 
