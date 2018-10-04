@@ -49,16 +49,24 @@ public class ReportController {
         return "app-list";
     }
 
+    @RequestMapping(value = "/report/{appName}")
+    public String getReportList(@PathVariable String appName, Map<String, Object> model){
+        List<String> fileList = reportService.getFileList(appName);
+        model.put("appName", appName);
+        model.put("fileList", fileList);
+        return  "file-list";
+    }
 
-    @RequestMapping(value = "/report/{id}")
-    public String getReportById(@PathVariable String id, Map<String, Object> model) {
+
+    @RequestMapping(value = "/report/{appName}/{fileName}")
+    public String getReportById(@PathVariable String appName, @PathVariable String fileName, Map<String, Object> model) {
        /* log.info("Sending request to get all reports, movieId from request: {}", id);
         List<Report> reports = reportService.getAll();
         reports.add(Report.builder().id("1").name("name_1").build());
         reports.add(Report.builder().id("2").name("name_2").build());*/
         // System.getProperty("user.dir");
         model.put("message", this.message);
-        model.put("index", id);
+        model.put("index", appName);
         model.put("dir", System.getProperty("user.dir"));
         //JSONObject jsonObject = readLineByLineJava8(System.getProperty("user.dir") + "/2018-09-21_09-47-04.900.json");
         //String content = htmlFromJson(jsonObject);

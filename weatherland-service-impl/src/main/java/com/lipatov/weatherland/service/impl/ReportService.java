@@ -42,6 +42,17 @@ public class ReportService implements IReportService {
     }
 
     @Override
+    public List<String> getFileList(String appName) {
+        File aDirectory = new File(System.getProperty("user.dir")+"/report/"+appName);
+        String[] filesInDir = aDirectory.list();
+        List<String> fileList =  new ArrayList<>();
+        for(String name: filesInDir){
+            fileList.add(name);
+        }
+        return fileList;
+    }
+
+    @Override
     public String getHtmlStr() {
         JSONObject jsonObject = readLineByLineJava8(System.getProperty("user.dir") + "/2018-09-21_09-47-04.900.json");
         return htmlFromJson(jsonObject, null);
